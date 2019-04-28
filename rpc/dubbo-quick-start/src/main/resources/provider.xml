@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 应用配置,用于配置当前应用应用信息,不管提供者还是消费者 -->
+    <!-- name：必填(服务治理) ** 当前应用名称,用于注册中心计算应用间依赖关系,消费者和提供者应用名最好不要一样,此项不是匹配条件 -->
+    <!-- organization：可选(服务治理) ** 组织名称,BU或者部门,建议写死 -->
+    <!-- version：可选 (服务治理) ** 当前版本 -->
+    <!-- owner：可选(服务治理) ** 应用负责人 ,填写负责人公司邮箱前缀 -->
+    <!-- environment ：可选(服务治理) ** 应应用环境，如：develop/test/product，不同环境使用不同的缺省值，以及作为只用于开发测试功能的限制条件 -->
+    <dubbo:application environment="develop" owner="wyc"
+                       version="0.0.1" name="demo" organization="iamwyc"/>
+
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <!-- address：必填(服务发现) ** 注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="29999"/>
+
+    <dubbo:service interface="iamwyc.api.DemoService" protocol="dubbo" ref="demoService"/>
+
+    <bean id="demoService" class="iamwyc.server.DemoServiceImpl"/>
+</beans>
