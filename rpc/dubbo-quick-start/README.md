@@ -192,7 +192,21 @@ http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <!-- address：必填(服务发现) ** 注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签 -->
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
-
+    <!-- address：必填(服务发现) ** 注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签 -->
+    <!-- 多配注册中心配置文件 开始:-->
+    
+    <!-- xml方式 开始：-->
+    <!-- <dubbo:registry id="ZK2181" address="zookeeper://127.0.0.1:2181"/> -->
+    <!-- <dubbo:registry id="ZK2888" address="zookeeper://127.0.0.1:2888"/> -->
+    <!--在使用dubbo:reference和dubbo:service 标签时添加registry参数。值为所需要使用的registry的id-->
+    <!-- xml方式 结束：-->
+        
+    <!-- 注解方式 开始：-->
+    <!-- 在配置文件(xml、properties、config类)中给不同的注册中心添加id -->
+    <!-- 在使用@Reference和@Service 注解添加registry参数。值为所需要使用的registry的id -->
+    <!-- 注解方式 结束：-->
+    <!-- 多配注册中心配置文件 结束:-->
+    
     <!-- 监控中心配置 -->
     <!-- protocol：可选 (服务治理) ** 监控中心协议，如果为protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。 -->
     <dubbo:monitor protocol="dubbo"/>
