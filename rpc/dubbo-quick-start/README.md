@@ -27,7 +27,7 @@ public class DemoServiceImpl implements DemoService {
 
 ```
 <dependencies>
-    <--注意这里还需要引入接口的依赖，因为本测试是demo这里就省略了-->
+    <!--注意这里还需要引入接口的依赖，因为本测试是demo这里就省略了-->
     <!-- spring begin -->
     <dependency>
         <groupId>org.springframework</groupId>
@@ -107,7 +107,10 @@ public class DemoServiceImpl implements DemoService {
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beanshttp://www.springframework.org/schema/beans/spring-beans.xsdhttp://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://code.alibabatech.com/schema/dubbo
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 应用配置,用于配置当前应用应用信息,不管提供者还是消费者 -->
     <!-- name：必填(服务治理) ** 当前应用名称,用于注册中心计算应用间依赖关系,消费者和提供者应用名最好不要一样,此项不是匹配条件 -->
@@ -160,7 +163,10 @@ public class Provider {
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beanshttp://www.springframework.org/schema/beans/spring-beans.xsdhttp://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://code.alibabatech.com/schema/dubbo
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 应用配置,用于配置当前应用应用信息,不管提供者还是消费者 -->
     <!-- name：必填(服务治理) ** 当前应用名称,用于注册中心计算应用间依赖关系,消费者和提供者应用名最好不要一样,此项不是匹配条件 -->
