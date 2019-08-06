@@ -6,6 +6,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +18,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -28,6 +28,20 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
  * @date : 2019/8/6 21:37
  */
 public class PDFUtil {
+
+  private static String basePath;
+  private static String fontPath = "font/simsun.ttc";
+  private static String savePath = "static/pdf";
+  private static String pdfFtl = "pdf.ftl";
+  private static String ftlDir = "/ftl";
+
+  static {
+    try {
+      basePath = ResourceUtils.getURL("classpath:").getPath();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
 
   public static String create() throws Exception {
     Map<String, Object> data = new HashMap<>(2);
@@ -40,7 +54,7 @@ public class PDFUtil {
             + "算￥6,034,118，即完成第二季度保底金额。" + "<br/>&#160;&#160;甲方向乙方提供相应金额的的增值税发票。<br/><br/>";
     data.put("tableList", TableItem.tableList);
     data.put("pageText", text);
-    return createPDFbyFtl("pdf.ftl", data);
+    return createPDFbyFtl(pdfFtl, data);
   }
 
   public static String createPDFbyFtl(String ftlName, Map<String, Object> data)
@@ -53,12 +67,11 @@ public class PDFUtil {
 
     String render = freeMarkerRender(data, ftlName);
     System.out.println(render);
-    File path = new File(ResourceUtils.getURL("classpath:").getPath());
-    File upload = new File(path.getAbsolutePath(), "static/images/upload/");
+    File upload = new File(new File(basePath).getAbsolutePath(), savePath);
     if (!upload.exists()) {
       upload.mkdirs();
     }
-    System.out.println(path);
+    System.out.println(upload.getAbsolutePath());
     FileOutputStream fos = new FileOutputStream(upload + "\\" + name);
     createPdf(render, fos);
     return name;
@@ -70,9 +83,7 @@ public class PDFUtil {
     freemarkerCfg = new Configuration(Configuration.VERSION_2_3_21);
     //freemarker的模板目录
     try {
-
-      ClassPathResource resource = new ClassPathResource("ftl");
-      freemarkerCfg.setDirectoryForTemplateLoading(resource.getFile());
+      freemarkerCfg.setDirectoryForTemplateLoading(new File(basePath + ftlDir));
       freemarkerCfg.setEncoding(Locale.CHINA, "UTF-8");
     } catch (IOException e) {
       e.printStackTrace();
@@ -95,8 +106,7 @@ public class PDFUtil {
     ITextRenderer render = new ITextRenderer();
 
     ITextFontResolver fontResolver = render.getFontResolver();
-    ClassPathResource resource = new ClassPathResource("msyh.ttc");
-    fontResolver.addFont(resource.getPath(), BaseFont.IDENTITY_H,
+    fontResolver.addFont(basePath + fontPath, BaseFont.IDENTITY_H,
         BaseFont.NOT_EMBEDDED);
 
     // 解析html生成pdf

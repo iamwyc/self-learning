@@ -21,7 +21,7 @@ public class TableItem {
   static {
     Random random = new Random();
     tableList = new ArrayList<>();
-    for (int i = 0; i < random.nextInt(); i++) {
+    for (int i = 0; i < 5; i++) {
       tableList
           .add(new TableItem(UUID.randomUUID().toString(), System.currentTimeMillis() + "",
               random.nextInt() + "",random.nextInt() + ""));
