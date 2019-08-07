@@ -33,11 +33,19 @@ public class PDFUtil {
   private static String fontPath = "font/simsun.ttc";
   private static String savePath = "static/pdf";
   private static String pdfFtl = "pdf.ftl";
-  private static String ftlDir = "/ftl";
+  private static String ftlDir = "ftl/";
+  private static String staticDiskPath;
+
+  public static void main(String[] args) throws Exception {
+    System.out.println(create());
+  }
 
   static {
     try {
       basePath = ResourceUtils.getURL("classpath:").getPath();
+      staticDiskPath = "file:" + basePath + ftlDir;
+      System.out.println("basePath:" + basePath);
+      System.out.println("staticDiskPath:" + staticDiskPath);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -66,13 +74,12 @@ public class PDFUtil {
         .format("out_%s%03d.pdf", format.format(new Date()), new Random().nextInt());
 
     String render = freeMarkerRender(data, ftlName);
-    System.out.println(render);
     File upload = new File(new File(basePath).getAbsolutePath(), savePath);
     if (!upload.exists()) {
       upload.mkdirs();
     }
-    System.out.println(upload.getAbsolutePath());
     FileOutputStream fos = new FileOutputStream(upload + "\\" + name);
+    System.out.println("out:" + upload + "\\" + name);
     createPdf(render, fos);
     return name;
   }
@@ -108,11 +115,12 @@ public class PDFUtil {
     ITextFontResolver fontResolver = render.getFontResolver();
     fontResolver.addFont(basePath + fontPath, BaseFont.IDENTITY_H,
         BaseFont.NOT_EMBEDDED);
-
-    // 解析html生成pdf
     render.setDocumentFromString(content);
+    // 解析html生成pdf
+    render.getSharedContext().setBaseURL(staticDiskPath);
     render.layout();
     render.createPDF(out);
     render.finishPDF();
+    out.close();
   }
 }
